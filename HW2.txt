@@ -1,0 +1,7 @@
+1.select lic_no, make, model from vehicles WHERE cost > (select avg(cost) from vehicles);
+2.select name from customers WHERE C_ID IN (select C_ID from rentals where RET_DATE IS null);
+3.select NAME, PHONE from customers where c_id IN(select C_ID from rentals where V_ID IS NOT Null);
+4.SELECT Count(c_id) FROM (SELECT c_id FROM (SELECT DISTINCT c_id FROM rentals) WHERE c_id IN (SELECT c_id FROM customers WHERE email LIKE '%@gmail.com%'));
+5. select name from customers where c_id IN 
+(select c_id from (select c_id from customers where c_id IN (select c_id from rentals where V_ID IN(SELECT ID from vehicles where MAKE = 'F')))
+where c_id NOT IN (select c_id from customers where c_id IN (select c_id from rentals where V_ID IN(SELECT ID from vehicles where MAKE NOT LIKE '%F%'))));

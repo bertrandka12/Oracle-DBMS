@@ -1,0 +1,81 @@
+1.  For every make of vehicle, print the make, total number of vehicles having that make, and the minimum and maximum rental costs of that make.
+
+2.  For every customer who has ever rented a vehicle, print the customer's name, the make, model, checkout date, and return date.  If a customer has rented multiple times, there should be a row for each of his/her rental.
+
+3.  For each Honda that was ever rented, print the lic_no, model, checkout date, and total miles driven during that rental period. The output must appear in descending order of checkout date.
+
+4.  For every vehicle, find the number of times it was rented.  The output should show the lic_no and the rental count. If a vehicle was never rented, the lic_no should be there in the output; but the count value should be absent.
+
+5.  Print the names of customers who have always rented the vehicle having the highest per day rental cost.
+
+====================================================================================================================================================================================================================================================================================================================================================================================
+
+
+1.SELECT make, Count(*), Min(cost), Max(cost) From vehicles Group by make;
+2.select name, make, model,ck_out_date, ret_date
+from customers, vehicles, rentals 
+where vehicles.id = rentals.v_id AND rentals.c_id = customers.c_id ;
+
+
+
+
+
+3.SELECT DISTINCT lic_no, model, ck_out_date, (miles_in-miles_out) FROM customers, vehicles, rentals WHERE vehicles.id = rentals.v_id AND vehicles.make = 'H' ORDER BY ck_out_date DESC;
+
+
+SELECT lic_no, COUNT(v_id) FROM vehicles LEFT JOIN rentals ON vehicles.id = rentals.v_id GROUP BY lic_no;
+
+4.select lic_no, count(v_id) kgl from vehicles, (SELECT lic_no, COUNT(v_id) FROM vehicles LEFT JOIN rentals ON vehicles.id = rentals.v_id GROUP BY lic_no) kgl where id=
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-> select name, ck_out_date, ret_date From customers INNER JOIN rentals ON customers.C_ID = rentals.C_ID;
+
+-> SELECT name, make, model, ck_out_date, ret_date From customers, vehicles, rentals Where customers.C_ID = rentals.C_ID;
+
+select name, make, model, ck_out_date, ret_date From customers C, vehicles V, rentals R where C.C_ID = R.C_ID AND V.ID = R.V_ID group by name having count(R.C_ID) >= 1; 
+
+
+
+select Name from customers where c_id IN( select c_id from (select c_id, ck_out_date, ret_date, make, model from rentals INNER JOIN vehicles ON rentals.v_id = vehicles.id));
+
+ALMOST THERE!!!!!!
+just need to add the vehicle info
+select Name,ck_out_date, ret_date from customers INNER JOIN rentals ON customers.c_id = rentals.c_id;
+
+
+select  make, model from vehicle where id IN (select v_id from rentals)
+-> select Name,ck_out_date, ret_date 
+from customers 
+INNER JOIN rentals 
+ON customers.c_id = rentals.c_id 
+AND 
+
+
+select make, model,ck_out_date, ret_date  
+from vehicles 
+INNER JOIN rentals
+ON vehicles.id = rentals.v_id ;
+
+
+
+select name, make, model,ck_out_date, ret_date  
+from customers, vehicles, rentals
+where vehicles.id = rentals.v_id ;
+
+
+

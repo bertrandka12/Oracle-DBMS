@@ -1,0 +1,114 @@
+CREATE TABLE vehicles(id Integer, vin int unique NOT NULL, lic_no char(10) unique NOT NULL, make char(2) CHECK(make in ('F','D','H','T')), model char(10), year Integer, color char(8), cost decimal(6,2), Primary Key(id));
+
+
+
+
+Insert into vehicles values('10011', '1001', 'AR101', 'T', 'Avalon', '2019', 'black', '5000.00');
+Insert into vehicles values('10012', '1002', 'AR102', 'F', 'Mustang', '2018', 'grey', '4500.00');
+Insert into vehicles values('10013', '1003', 'AR103', 'H', 'Accord', '2015', 'white', '2000.00');
+Insert into vehicles values('10014', '1004', 'AR104', 'T', 'Prado', '2019', 'grey', '2000.00');
+Insert into vehicles values('10015', '1005', 'AR105', 'D', 'Charger', '2019', 'black', '5000.00');
+Insert into vehicles values('10016', '1006', 'AR106', 'H', 'civic', '2020', 'white', '5999.00');
+Insert into vehicles values('10017', '1007', 'AR107', 'T', 'LandCruiser', '2019', 'black', '50000.00');
+Insert into vehicles values('10018', '1008', 'AR108', 'T', 'Yaris', '2018', 'blue', '2000.00');
+Insert into vehicles values('10019', '1009', 'AR109', 'F', 'Raptor', '2020', 'blue', '50000.00');
+Insert into vehicles values('10000', '1000', 'AR100', 'F', 'Expedition', '2019', 'red', '35000.00');
+
+
+repeat these lines:
+Insert into vehicles values('10014', '1004', 'AR104', 'T', 'Prado', '2017', 'grey', '2000.00');
+Insert into vehicles values('10017', '1007', 'AR107', 'D', 'Stratus', '2019', 'black', '5000.00');
+Insert into vehicles values('10019', '1009', 'AR109', 'F', 'Raptor', '2020', 'blue', '6000.00');
+Insert into vehicles values('10020', '1000', 'AR110', 'F', 'Explorer', '2018', 'red', '3500.00');
+Insert into vehicles values('10021', '1010', 'AR111', 'T', 'Rav4', '2019', 'red', '3500.00');
+
+
+
+
+
+CUSTOMERS TABLE
+
+CREATE TABLE customers(c_id Integer primary key, name char(10) NOT NULL, phone char(9), email char(15));
+
+Insert into customers values(01, 'Jackson', '123-123-000', NULL);
+Insert into customers values(02, 'Oliver', 123123001, NULL);
+Insert into customers values(03, 'Mary', 123123002, NULL);
+Insert into customers values(04, 'Jane', 123123003, NULL);
+Insert into customers values(05, 'Michel', 123123004, NULL);
+Insert into customers values(06, 'Egide', 123123005, NULL);
+Insert into customers values(07, 'Espoir', 123123006, NULL);
+Insert into customers values(08, 'Jacques', 123123007, NULL);
+Insert into customers values(09, 'Eric', 123123008, NULL);
+Insert into customers values(10, 'James', 123123009, NULL);
+
+
+ALTER TABLE customers MODIFY (c_id Interger Primary key(c_id)); 
+
+
+
+
+
+RENTALS TABLE
+
+CREATE TABLE rentals(
+c_id Integer, 
+v_id Integer, 
+ck_out_date Date NOT NULL,
+miles_out Integer, 
+ret_date Date, 
+miles_in Integer, 
+Foreign key (c_id) References customers (c_id), 
+Foreign key (v_id) References vehicles (id), Primary Key(c_id, v_id));
+
+
+Insert into rentals values(01, 10011, '04-JAN-20', 2000, '04-JAN-25', 2100);
+Insert into rentals values(02, 10012, '01-FEB-20', 2100, '05-FEB-20', 2150);
+Insert into rentals values(03, 10013, '07-FEB-20', 1000, '10-FEB-20', 1100);
+Insert into rentals values(04, 10014, '20-MAY-20', 300, '23-MAY-20', 500);
+Insert into rentals values(05, 10015, '14-MAY-20', 1400, '15-MAY-20', 1500);
+Insert into rentals values(06, 10016, '05-JUN-20', 600, '10-JUN-20', 800);
+Insert into rentals values(07, 10017, '01-JUL-20', 4000, '05-JUL-20', 4500);
+Insert into rentals values(08, 10018, '04-AUG-20', 30, '10-AUG-20', 100);
+Insert into rentals values(09, 10019, '10-AUG-20', 7000, '14-AUG-20', 7500);
+Insert into rentals values(10, 10020, '04-SEP-20',1500, '14-SEP-20', '1509');
+***************************************************************************************************************************************************************
+
+
+
+STEPS 3,4,5
+
+To make the output of tasks 3, 4, and 5 look nicer, please set the following formats before executing those commands.  The formats should be set from sqlplus (i.e., after logging on to oracle).
+
+         SQL> column owner format a12
+         SQL> column table_name format a12
+         SQL> column foreign_key format a12
+         SQL> column primary_key format a12
+         SQL> column referring_table format a15
+         SQL> column search_condition format a45
+
+
+
+
+To show the primary keys:
+
+select a.owner, a.table_name, column_name primary_key, a.constraint_name from user_cons_columns a, user_constraints b where a.constraint_name = b.constraint_name and constraint_type = 'P';
+
+
+To show the foreign keys:
+
+select a.owner, a.table_name, a.column_name foreign_key, b.table_name Referring_table, b.column_name Primary_key from user_cons_columns a, user_cons_columns b, user_constraints c where a.constraint_name = c.constraint_name and c.r_constraint_name = b.constraint_name;
+
+
+To show all other constraints:
+
+select owner, table_name, search_condition from user_constraints where search_condition is not null;
+
+
+
+mail.send('bmkalisa@uark.edu','bmkalisa@uark.edu',v_message,'test message');
+
+
+
+
+
+

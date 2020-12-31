@@ -1,0 +1,219 @@
+SQL> select * from cat;
+
+TABLE_NAME                     TABLE_TYPE                                       
+------------------------------ -----------                                      
+CUSTOMERS                      TABLE                                            
+RENTALS                        TABLE                                            
+VEHICLES                       TABLE                                            
+
+SQL> desc vehicles
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ ID                                        NOT NULL NUMBER(38)
+ VIN                                       NOT NULL NUMBER(38)
+ LIC_NO                                    NOT NULL CHAR(10)
+ MAKE                                               CHAR(2)
+ MODEL                                              CHAR(10)
+ YEAR                                               NUMBER(38)
+ COLOR                                              CHAR(8)
+ COST                                               NUMBER(6,2)
+
+SQL> desc customers
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ C_ID                                      NOT NULL NUMBER(38)
+ NAME                                      NOT NULL CHAR(10)
+ PHONE                                              CHAR(9)
+ EMAIL                                              CHAR(15)
+
+SQL> desc rentals
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ C_ID                                      NOT NULL NUMBER(38)
+ V_ID                                      NOT NULL NUMBER(38)
+ CK_OUT_DATE                               NOT NULL DATE
+ MILES_OUT                                          NUMBER(38)
+ RET_DATE                                           DATE
+ MILES_IN                                           NUMBER(38)
+
+SQL> select a.owner, a.table_name, column_name primary_key, a.constraint_name from user_cons_columns a, user_constraints b where a.constraint_name = b.constraint_name and constraint_type = 'P';
+
+OWNER                          TABLE_NAME                                       
+------------------------------ ------------------------------                   
+PRIMARY_KEY                                                                     
+--------------------------------------------------------------------------------
+CONSTRAINT_NAME                                                                 
+------------------------------                                                  
+DBCLASS41                      VEHICLES                                         
+ID                                                                              
+SYS_C0026425                                                                    
+                                                                                
+DBCLASS41                      CUSTOMERS                                        
+C_ID                                                                            
+SYS_C0026445                                                                    
+
+OWNER                          TABLE_NAME                                       
+------------------------------ ------------------------------                   
+PRIMARY_KEY                                                                     
+--------------------------------------------------------------------------------
+CONSTRAINT_NAME                                                                 
+------------------------------                                                  
+                                                                                
+DBCLASS41                      RENTALS                                          
+C_ID                                                                            
+SYS_C0026460                                                                    
+                                                                                
+DBCLASS41                      RENTALS                                          
+V_ID                                                                            
+
+OWNER                          TABLE_NAME                                       
+------------------------------ ------------------------------                   
+PRIMARY_KEY                                                                     
+--------------------------------------------------------------------------------
+CONSTRAINT_NAME                                                                 
+------------------------------                                                  
+SYS_C0026460                                                                    
+                                                                                
+
+SQL> 
+SQL> 
+SQL> 
+SQL> select a.owner, a.table_name, a.column_name foreign_key, b.table_name Referring_table, b.column_name Primary_key from user_cons_columns a, user_cons_columns b, user_constraints c where a.constraint_name = c.constraint_name and c.r_constraint_name = b.constraint_name;
+
+OWNER                          TABLE_NAME                                       
+------------------------------ ------------------------------                   
+FOREIGN_KEY                                                                     
+--------------------------------------------------------------------------------
+REFERRING_TABLE                                                                 
+------------------------------                                                  
+PRIMARY_KEY                                                                     
+--------------------------------------------------------------------------------
+DBCLASS41                      RENTALS                                          
+C_ID                                                                            
+CUSTOMERS                                                                       
+C_ID                                                                            
+                                                                                
+
+OWNER                          TABLE_NAME                                       
+------------------------------ ------------------------------                   
+FOREIGN_KEY                                                                     
+--------------------------------------------------------------------------------
+REFERRING_TABLE                                                                 
+------------------------------                                                  
+PRIMARY_KEY                                                                     
+--------------------------------------------------------------------------------
+DBCLASS41                      RENTALS                                          
+V_ID                                                                            
+VEHICLES                                                                        
+ID                                                                              
+                                                                                
+
+SQL> 
+SQL> 
+SQL> 
+SQL> select owner, table_name, search_condition from user_constraints where search_condition is not null;
+
+OWNER                                                                           
+--------------------------------------------------------------------------------
+TABLE_NAME                                                                      
+------------------------------                                                  
+SEARCH_CONDITION                                                                
+--------------------------------------------------------------------------------
+DBCLASS41                                                                       
+RENTALS                                                                         
+"CK_OUT_DATE" IS NOT NULL                                                       
+                                                                                
+DBCLASS41                                                                       
+CUSTOMERS                                                                       
+"NAME" IS NOT NULL                                                              
+
+OWNER                                                                           
+--------------------------------------------------------------------------------
+TABLE_NAME                                                                      
+------------------------------                                                  
+SEARCH_CONDITION                                                                
+--------------------------------------------------------------------------------
+                                                                                
+DBCLASS41                                                                       
+VEHICLES                                                                        
+make in ('F','D','H','T')                                                       
+                                                                                
+DBCLASS41                                                                       
+VEHICLES                                                                        
+
+OWNER                                                                           
+--------------------------------------------------------------------------------
+TABLE_NAME                                                                      
+------------------------------                                                  
+SEARCH_CONDITION                                                                
+--------------------------------------------------------------------------------
+"LIC_NO" IS NOT NULL                                                            
+                                                                                
+DBCLASS41                                                                       
+VEHICLES                                                                        
+"VIN" IS NOT NULL                                                               
+                                                                                
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> select * from vehicles;
+
+        ID        VIN LIC_NO     MA MODEL            YEAR COLOR          COST   
+---------- ---------- ---------- -- ---------- ---------- -------- ----------   
+     10012       1002 AR102      F  Mustang          2018 grey           4500   
+     10013       1003 AR103      H  Accord           2015 white          2000   
+     10015       1005 AR105      D  Charger          2019 black          5000   
+     10016       1006 AR106      H  civic            2020 white          5999   
+     10018       1008 AR108      T  Yaris            2018 blue           2000   
+     10017       1007 AR107      D  Stratus          2019 black          5000   
+     10019       1009 AR109      F  Raptor           2020 blue           6000   
+     10020       1000 AR110      F  Explorer         2018 red            3500   
+     10021       1010 AR111      T  Rav4             2019 red            3500   
+     10011       1001 AR101      T  Avalon           2019 black          5000   
+     10014       1004 AR104      T  Prado            2019 grey           2000   
+
+11 rows selected.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> select * from customers;
+
+      C_ID NAME       PHONE     EMAIL                                           
+---------- ---------- --------- ---------------                                 
+         1 Jackson    123123000                                                 
+         2 Oliver     123123001                                                 
+         3 Mary       123123002                                                 
+         4 Jane       123123003                                                 
+         5 Michel     123123004                                                 
+         6 Egide      123123005                                                 
+         7 Espoir     123123006                                                 
+         8 Jacques    123123007                                                 
+         9 Eric       123123008                                                 
+        10 James      123123009                                                 
+
+10 rows selected.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> select * from rentals;
+
+      C_ID       V_ID CK_OUT_DA  MILES_OUT RET_DATE    MILES_IN                 
+---------- ---------- --------- ---------- --------- ----------                 
+         1      10011 04-JAN-20       2000 04-JAN-25       2100                 
+         2      10012 01-FEB-20       2100 05-FEB-20       2150                 
+         3      10013 07-FEB-20       1000 10-FEB-20       1100                 
+         5      10015 14-MAY-20       1400 15-MAY-20       1500                 
+         6      10016 05-JUN-20        600 10-JUN-20        800                 
+         7      10017 01-JUL-20       4000 05-JUL-20       4500                 
+         8      10018 04-AUG-20         30 10-AUG-20        100                 
+         9      10019 10-AUG-20       7000 14-AUG-20       7500                 
+         4      10014 20-MAY-20        300 23-MAY-20        500                 
+        10      10020 04-SEP-20       1500 14-SEP-20       1509                 
+
+10 rows selected.
+
+SQL> spool off

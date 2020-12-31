@@ -1,0 +1,117 @@
+SQL> spool
+currently spooling to assignment2.lst
+SQL> select * from vehicles;
+
+        ID        VIN LIC_NO     MA MODEL            YEAR COLOR          COST   
+---------- ---------- ---------- -- ---------- ---------- -------- ----------   
+     10012       1002 AR102      F  Mustang          2018 grey           4500   
+     10013       1003 AR103      H  Accord           2015 white          2000   
+     10015       1005 AR105      D  Charger          2019 black          5000   
+     10016       1006 AR106      H  civic            2020 white          5999   
+     10018       1008 AR108      T  Yaris            2018 blue           2000   
+     10017       1007 AR107      D  Stratus          2019 black          5000   
+     10019       1009 AR109      F  Raptor           2020 blue           6000   
+     10020       1000 AR110      F  Explorer         2018 red            3500   
+     10021       1010 AR111      T  Rav4             2019 red            3500   
+     10011       1001 AR101      T  Avalon           2019 black          5000   
+     10014       1004 AR104      T  Prado            2019 grey           2000   
+
+11 rows selected.
+
+SQL> select * from customers;
+
+      C_ID NAME       PHONE     EMAIL                                           
+---------- ---------- --------- ---------------                                 
+         1 Jackson    123123000 jack@gmail.com                                  
+         2 Oliver     123123001 oli@gmail.com                                   
+         3 Mary       123123002 mary@uark.edu                                   
+         4 Jane       123123003 Jane@uark.edu                                   
+         5 Michel     123123004 mich@uark.edu                                   
+         6 Egide      123123005                                                 
+         7 Espoir     123123006                                                 
+         8 Jacques    123123007                                                 
+         9 Eric       123123008 eric@uark.edu                                   
+        10 James      123123009                                                 
+
+10 rows selected.
+
+SQL> select * from rentals;
+
+      C_ID       V_ID CK_OUT_DA  MILES_OUT RET_DATE    MILES_IN                 
+---------- ---------- --------- ---------- --------- ----------                 
+         1      10011 04-JAN-20       2000 04-JAN-25       2100                 
+         2      10012 01-FEB-20       2100 05-FEB-20       2150                 
+         3      10013 07-FEB-20       1000 10-FEB-20       1100                 
+         5      10015 14-MAY-20       1400 15-MAY-20       1500                 
+         6      10016 05-JUN-20        600 10-JUN-20        800                 
+         7      10017 01-JUL-20       4000 05-JUL-20       4500                 
+         8      10018 04-AUG-20         30 10-AUG-20        100                 
+         9      10019 10-AUG-20       7000 14-AUG-20       7500                 
+         4      10014 20-MAY-20        300 23-MAY-20        500                 
+        10      10020 04-SEP-20       1500 14-SEP-20       1509                 
+         1      10019 10-SEP-20       7700                                      
+
+      C_ID       V_ID CK_OUT_DA  MILES_OUT RET_DATE    MILES_IN                 
+---------- ---------- --------- ---------- --------- ----------                 
+         2      10019 10-SEP-20       7700                                      
+         4      10018 11-SEP-20       7700                                      
+
+13 rows selected.
+
+SQL> select lic_no, make, model from vehicles WHERE cost > (select avg(cost) from vehicles);
+
+LIC_NO     MA MODEL                                                             
+---------- -- ----------                                                        
+AR102      F  Mustang                                                           
+AR105      D  Charger                                                           
+AR106      H  civic                                                             
+AR107      D  Stratus                                                           
+AR109      F  Raptor                                                            
+AR101      T  Avalon                                                            
+
+6 rows selected.
+
+SQL> select name from customers WHERE C_ID IN (select C_ID from rentals where RET_DATE IS null);
+
+NAME                                                                            
+----------                                                                      
+Jackson                                                                         
+Oliver                                                                          
+Jane                                                                            
+
+SQL> select NAME, PHONE from customers where c_id IN(select C_ID from rentals where V_ID IS NOT Null);
+
+NAME       PHONE                                                                
+---------- ---------                                                            
+Jackson    123123000                                                            
+Oliver     123123001                                                            
+Mary       123123002                                                            
+Jane       123123003                                                            
+Michel     123123004                                                            
+Egide      123123005                                                            
+Espoir     123123006                                                            
+Jacques    123123007                                                            
+Eric       123123008                                                            
+James      123123009                                                            
+
+10 rows selected.
+
+SQL> SELECT Count(c_id) FROM (SELECT c_id FROM (SELECT DISTINCT c_id FROM rentals) WHERE c_id IN (SELECT c_id FROM customers WHERE email LIKE '%@gmail.com%'));
+
+COUNT(C_ID)                                                                     
+-----------                                                                     
+          2                                                                     
+
+SQL> select name from customers where c_id IN
+  2  (select c_id from (select c_id from customers where c_id IN (select c_id from rentals where V_ID IN(SELECT ID from vehicles where MAKE = 'F')))
+  3  where c_id NOT IN (select c_id from customers where c_id IN (select c_id from rentals where V_ID IN(SELECT ID from vehicles where MAKE NOT LIKE '%F%'))));
+
+NAME                                                                            
+----------                                                                      
+Oliver                                                                          
+James                                                                           
+Eric                                                                            
+
+SQL> 
+SQL> 
+SQL> spool off
